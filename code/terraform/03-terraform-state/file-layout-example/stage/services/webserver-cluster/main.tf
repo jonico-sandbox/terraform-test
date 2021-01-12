@@ -1,12 +1,17 @@
 terraform {
-  required_version = ">= 0.12, < 0.13"
+  required_version = ">= 0.12, < 0.15"
+  backend "s3" {
+    bucket = "terraform-up-and-running-state-jonico"
+    key = "stage/services/webserver-cluster/terraform.tfstate"
+    region = "us-east-2"
+    dynamodb_table = "terraform-up-and-running-locks-jonico"
+    encrypt = true
+  }
 }
 
 provider "aws" {
   region = "us-east-2"
 
-  # Allow any 2.x version of the AWS provider
-  version = "~> 2.0"
 }
 
 resource "aws_launch_configuration" "example" {
